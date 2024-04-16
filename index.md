@@ -15,9 +15,9 @@ We are building the **Universal data format** (Udf). Having taken the JSON-data 
 
 From this tiny example, it should be instantly obvious that Udf expands the JSON by introducing
 
-* comments (starting with '#')
-* type-constraints (between '&lt;' and '>')
-* empty-value (empty)
+* Comments (starting with `#`)
+* Type-constraints (between '<' and '>', e.g. `<String>`)
+* Empty-value (`empty`)
 
 These are examples of something that are lacking from JSON. JSON has served us well, but in order to build the
 next generation solutions we need to go further and look for a better data format.
@@ -31,9 +31,9 @@ next generation solutions we need to go further and look for a better data forma
 | Boolean keys | Object can have value omitted. The key is interpreted as Boolean, and the value will be true | `{hidden}`
 | Path-value   | Path-value can be declared. It is serialized as string | `{key: ~.otherKey[1].value}`
 | Multiline String value       | Basic multiline String-value can be declared | `{key: """line1\n  line2\n  line3"""}`
-| Multiline String value """|  | Multiline String-value can be declared | `{key: """|line1\n  line2\n  line3"""}`
+| Multiline String value """|  | Multiline String-value can be declared | `{key: """\|line1\n  line2\n  line3"""}`
 | Multiline String value """>  | Multiline String-value can be declared | `{key: """>line1\n  line2\n  line3"""}`
-| Raw-value    | Raw-value can be declared inside backticks | `{key: \`raw value\`}`
+| Raw-value    | Raw-value can be declared inside backticks | ```{key: `raw value`}```
 | Configuration options | Object's field may have configuration options. This is an object itself | `{mykey {hidden}: "my-value"}`
 | Constraints, support level 1 | Constraints are supported, but they are not evaluated | `{myfield <String>: "my-value"}`
 | Constraints, support level 2 | Constraints are supported and basic data-types are evaluated | `{myfield <String>: "my-value"}`
