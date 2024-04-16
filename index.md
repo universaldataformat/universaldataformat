@@ -31,7 +31,7 @@ next generation solutions we need to go further and look for a better data forma
 | Boolean keys | Object can have value omitted. The key is interpreted as Boolean, and the value will be true | `{hidden}`
 | Path-value   | Path-value can be declared. It is serialized as string | `{key: ~.otherKey[1].value}`
 | Multiline String value       | Basic multiline String-value can be declared | `{key: """line1\n  line2\n  line3"""}`
-| Multiline String value """|  | Multiline String-value can be declared | `{key: """\|line1\n  line2\n  line3"""}`
+| Multiline String value """\|  | Multiline String-value can be declared | `{key: """\|line1\n  line2\n  line3"""}`
 | Multiline String value """>  | Multiline String-value can be declared | `{key: """>line1\n  line2\n  line3"""}`
 | Raw-value    | Raw-value can be declared inside backticks | ```{key: `raw value`}```
 | Configuration options | Object's field may have configuration options. This is an object itself | `{mykey {hidden}: "my-value"}`
