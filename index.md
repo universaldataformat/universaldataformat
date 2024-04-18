@@ -459,6 +459,58 @@ There are several use cases that could benefit from UDF Paths with their separat
 
 Overall, UDF Paths with their separation of path navigation and value interpretation offer a flexible and modular approach to accessing data within complex JSON structures. This can lead to improved code maintainability, easier handling of data model changes, and context-specific value processing.
 
+## UDF value constraints
+
+The Object's field may have a value constraint associated with it. This value constraint is an UDFEL-expression, which evaluates if the value adheres to the constraint.
+
+### Example
+
+```
+{
+  myfield <String>: "myvalue"
+}
+```
+
+* In this example the `<String>` is an **UDF value constraint**. In this case it means that the value `"Hello"` must be of String-type.
+
+### Benefits
+
+UDF constraints with UDFEL expressions offer several benefits for validating and processing UDF object field values:
+
+**1. Enhanced Data Validation:**
+
+* UDFEL expressions allow for powerful and flexible data validation. You can define constraints that ensure data adheres to specific formats, ranges, or relationships between different fields within the object. This helps maintain data integrity and prevent errors during processing.
+
+* The ability to reference the current value (`@`) within expressions allows for more complex validations. For instance, you can check if a value falls within a certain range relative to another field's value.
+
+**2. Improved Data Processing:**
+
+* UDFEL expressions can be used for data transformation and manipulation within the constraints themselves.  This can simplify your code and avoid the need for separate processing steps.
+
+* Functions like `filter` in your example demonstrate how UDFEL can be used to filter or modify values based on certain conditions, reducing the need for external processing logic.
+
+**3. Reusability and Maintainability:**
+
+* UDFEL expressions can be reused across different object fields or even across different UDF data structures. This promotes code reuse and reduces redundancy.
+
+* By centralizing validation logic within UDFEL expressions, maintaining data integrity rules becomes easier. Changes to validation requirements can be reflected by modifying the expressions in one place, rather than scattered throughout the code.
+
+**4. Increased Expressiveness:**
+
+* UDFEL provides a powerful language for expressing complex validation rules. This allows for more comprehensive data checks and ensures the data meets the specific requirements of your application.
+
+**5. Error Handling and Debugging:**
+
+* UDFEL expressions can potentially be used for defining custom error messages associated with constraint failures. This can provide more informative error messages during data processing, aiding in debugging and troubleshooting.
+
+Here are some additional points to consider:
+
+* **Complexity Management:** While powerful, UDFEL expressions can become complex. Strive for a balance between expressiveness and readability.  Consider using clear variable names and comments within the expressions to enhance maintainability.
+
+* **Performance Considerations:**  Evaluate the performance impact of complex UDFEL expressions, especially for large datasets.  If necessary, explore alternative validation approaches for performance-critical scenarios.
+
+Overall, UDF constraints with UDFEL expressions offer a robust and flexible mechanism for data validation, processing, and manipulation within the UDF data format itself. This promotes data integrity, simplifies code, and improves maintainability of your UDF applications.
+
 ## UDF Expression Language
 
 UDF Expression Language (UDFEL) is an expressive language to validate the UDF-data in Object's constraints. UDFEL is a subset of a language called Operon (operon.io). UDF uses UDFEL only in the Object's constraints.
