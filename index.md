@@ -250,3 +250,19 @@ COMMENT
     : '#' ~[\r\n]* -> skip
     ;
 ```
+
+## Paths in Universal data format
+
+There are several use cases that could benefit from UDF Paths with their separation of concerns between path navigation and value interpretation:
+
+1. **Modular Data Access:** Imagine large and complex JSON structures representing different entities or data models. UDF Paths allow developers to define reusable paths for accessing specific data points within these structures. This separation promotes modularity and reduces code duplication. The receiving application can handle named values based on its context, keeping the path definition independent.
+
+2. **Versioning and Flexibility:**  As data structures evolve, UDF Paths can remain relatively stable. Updates to the data model can be handled by the application logic interpreting the named value, without needing to modify the paths themselves. This enhances flexibility and simplifies future changes.
+
+3. **Context-Specific Value Interpretation:** UDF Paths can be used for accessing data points that require context-specific interpretation. For instance, a path might access a numerical value representing a currency amount. The receiving application, understanding the context, can interpret the value based on the defined currency and potentially display it with a symbol or formatting.
+
+4. **Customizable Data Processing:**  UDF Paths could be used in conjunction with data processing pipelines. By separating path navigation from value interpretation, developers can define standard paths for accessing data, while allowing for custom logic within the application to handle specific named values in different ways.
+
+5. **Improved Code Readability:**  UDF Paths with named values can enhance code readability. Paths become self-documenting, clearly indicating the data point being accessed. The application context handles the interpretation of named values, keeping the path definition focused on navigation.
+
+Overall, UDF Paths with their separation of path navigation and value interpretation offer a flexible and modular approach to accessing data within complex JSON structures. This can lead to improved code maintainability, easier handling of data model changes, and context-specific value processing.
