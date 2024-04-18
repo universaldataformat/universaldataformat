@@ -544,18 +544,18 @@ Consider this example:
 ```
 
 Input: `[1,2,3,4,5,6,7]`
-UDFEL: `Filter @ < 5; => count() = 4`
+UDFEL: `@[@ < 5] => count() = 4`
 
-The `Filter` -expression outputs: `[1, 2, 3, 4]`, which will be input for `=> count()`, which output `4`, which is the Left Hand Side (LHS) of `LHS = 4`. So the finally evaluated expression is `4 = 4`, which is `true`.
+The Filter -expression `@[@ < 5]` outputs: `[1, 2, 3, 4]`, which will be input for `=> count()`, which output `4`, which is the Left Hand Side (LHS) of `LHS = 4`. So the finally evaluated expression is `4 = 4`, which is `true`.
 
 ### Arrays
 
-Arrays may be filtered with the `Filter` expression. This expression must and with `End` or `;`. The `Filter` -keyword may be shortened with `[` and `]` when the expression does not start with `Filter`.
+Arrays may be filtered with the Filter-expression.
 
 #### Example
 
 ```
-[1,2,3,4,5,6,7] Filter @ < 5;
+[1,2,3,4,5,6,7][@ < 5]
 ```
 
 #### UDF Arrays and zero-index
