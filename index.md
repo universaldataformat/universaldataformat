@@ -253,11 +253,11 @@ COMMENT
 
 ## Comments
 
-UDF supports comments with Python-style hash (#) notation.
+UDF supports comments with Python-style hash (`#`) notation.
 
-### Example
+### Examples
 
-```json
+```
 {
   "myfield": "myvalue", # This is a comment describing the value
   anotherValue: 100
@@ -266,7 +266,7 @@ UDF supports comments with Python-style hash (#) notation.
 
 Here's another example:
 
-```json
+```
 # Here's an array
 [
   # Below are some values
@@ -275,6 +275,14 @@ Here's another example:
   # Here's some more values
   100, 200, 300 # Three values
 ]
+```
+
+### Grammar
+
+```
+COMMENT
+    : '#' ~[\r\n]* -> skip
+    ;
 ```
 
 ### Benefits
@@ -311,19 +319,6 @@ In conclusion, UDF's support for Python-style comments is a valuable feature tha
 
 The object's key may have value omitted. In this case the key will be interpreted as a Boolean -value and the value will be set as `true`.
 
-### Grammar
-
-```
-obj
-   : '{' pair (',' pair)* '}'
-   | '{' '}'
-   ;
-
-pair
-   : (STRING | ID) obj? constraint_udf_value? (':' (value))?
-   ;
-```
-
 ### Example
 
 ```
@@ -340,6 +335,19 @@ The corresponding JSON is as follows:
   "prettyPrint": true,
   "otherOption": false
 }
+```
+
+### Grammar
+
+```
+obj
+   : '{' pair (',' pair)* '}'
+   | '{' '}'
+   ;
+
+pair
+   : (STRING | ID) obj? constraint_udf_value? (':' (value))?
+   ;
 ```
 
 ### Benefits
@@ -372,9 +380,9 @@ UDF's support for boolean keys offers several potential benefits:
 
 Overall, UDF's boolean keys offer a convenient way to write concise and readable code, manage default values, and ensure backward compatibility. However, it's important to use them judiciously to maintain clarity and avoid confusion.
 
-## Path -type in Universal data format
+## Path -type
 
-Examples of UDF Paths are given below:
+### Examples
 
 * `Path(.names[1])`
   * This path is not plugged into any specific root-value, the application must define or know it implicitly or based on other context information.
@@ -394,41 +402,6 @@ With UDF it is also possible to use the UDF Metadata to advice the application c
   }: Path(.names[1])
 }
 ```
-### UDF Paths Navigation
-
-* **.names**: This refers to a key within a JSON/UDF object. In the path `Path(.names[1])`, it indicates that we are looking for the value associated with the key `"names"`.
-
-* **[1]**: This represents an index within a list or array. In the path `Path(.names[1])`, it means we are interested in the value at the first position (index 1) of the list associated with the `"names"` key.
-
-**Example:**
-
-Given a JSON structure like this:
-
-```json
-{
-  "names": ["Alice", "Bob", "Charlie"]
-}
-```
-
-The path `Path(.names[1])` would target the value 'Alice'.
-
-In essence, `.names` specifies the key within the JSON/UDF object, and `[1]` selects the element at the first position (index 1) from the value found using the key. This allows you to navigate through nested structures within your JSON/UDF data.
-
-### Use cases for Paths
-
-There are several use cases that could benefit from UDF Paths with their separation of concerns between path navigation and value interpretation:
-
-1. **Modular Data Access:** Imagine large and complex JSON structures representing different entities or data models. UDF Paths allow developers to define reusable paths for accessing specific data points within these structures. This separation promotes modularity and reduces code duplication. The receiving application can handle named values based on its context, keeping the path definition independent.
-
-2. **Versioning and Flexibility:**  As data structures evolve, UDF Paths can remain relatively stable. Updates to the data model can be handled by the application logic interpreting the named value, without needing to modify the paths themselves. This enhances flexibility and simplifies future changes.
-
-3. **Context-Specific Value Interpretation:** UDF Paths can be used for accessing data points that require context-specific interpretation. For instance, a path might access a numerical value representing a currency amount. The receiving application, understanding the context, can interpret the value based on the defined currency and potentially display it with a symbol or formatting.
-
-4. **Customizable Data Processing:**  UDF Paths could be used in conjunction with data processing pipelines. By separating path navigation from value interpretation, developers can define standard paths for accessing data, while allowing for custom logic within the application to handle specific named values in different ways.
-
-5. **Improved Code Readability:**  UDF Paths with named values can enhance code readability. Paths become self-documenting, clearly indicating the data point being accessed. The application context handles the interpretation of named values, keeping the path definition focused on navigation.
-
-Overall, UDF Paths with their separation of path navigation and value interpretation offer a flexible and modular approach to accessing data within complex JSON structures. This can lead to improved code maintainability, easier handling of data model changes, and context-specific value processing.
 
 ### Path -grammar
 
@@ -450,9 +423,92 @@ path_value
 * Path can be written in a shorthand form with `~(...)`. E.g. `~(.names[1]`.
   * This shorthand form supports also empty paths, e.g. `~()`.
 
-### Paths and one-based indexing
+### Paths Navigation
 
-Returning all UDF Paths as an array (where each element is a `Path` object) from a zero-index can be a powerful feature with several potential use cases:
+* **.names**: This refers to a key within a JSON/UDF object. In the path `Path(.names[1])`, it indicates that we are looking for the value associated with the key `"names"`.
+
+* **[1]**: This represents an index within a list or array. In the path `Path(.names[1])`, it means we are interested in the value at the first position (index 1) of the list associated with the `"names"` key.
+
+**Example:**
+
+Given a JSON structure like this:
+
+```json
+{
+  "names": ["Alice", "Bob", "Charlie"]
+}
+```
+
+The path `Path(.names[1])` would target the value 'Alice'.
+
+In essence, `.names` specifies the key within the JSON/UDF object, and `[1]` selects the element at the first position (index 1) from the value found using the key. This allows you to navigate through nested structures within your JSON/UDF data.
+
+### Benefits
+
+There are several use cases that could benefit from UDF Paths with their separation of concerns between path navigation and value interpretation:
+
+1. **Modular Data Access:** Imagine large and complex JSON structures representing different entities or data models. UDF Paths allow developers to define reusable paths for accessing specific data points within these structures. This separation promotes modularity and reduces code duplication. The receiving application can handle named values based on its context, keeping the path definition independent.
+
+2. **Versioning and Flexibility:**  As data structures evolve, UDF Paths can remain relatively stable. Updates to the data model can be handled by the application logic interpreting the named value, without needing to modify the paths themselves. This enhances flexibility and simplifies future changes.
+
+3. **Context-Specific Value Interpretation:** UDF Paths can be used for accessing data points that require context-specific interpretation. For instance, a path might access a numerical value representing a currency amount. The receiving application, understanding the context, can interpret the value based on the defined currency and potentially display it with a symbol or formatting.
+
+4. **Customizable Data Processing:**  UDF Paths could be used in conjunction with data processing pipelines. By separating path navigation from value interpretation, developers can define standard paths for accessing data, while allowing for custom logic within the application to handle specific named values in different ways.
+
+5. **Improved Code Readability:**  UDF Paths with named values can enhance code readability. Paths become self-documenting, clearly indicating the data point being accessed. The application context handles the interpretation of named values, keeping the path definition focused on navigation.
+
+Overall, UDF Paths with their separation of path navigation and value interpretation offer a flexible and modular approach to accessing data within complex JSON structures. This can lead to improved code maintainability, easier handling of data model changes, and context-specific value processing.
+
+## UDF Expression Language
+
+UDF Expression Language (UDFEL) is an expressive language to validate the UDF-data in Object's constraints. UDFEL is a subset of a language called Operon (operon.io). UDF uses UDFEL only in the Object's constraints.
+
+**Example of UDFEL in Object's constraint**
+
+```
+{
+  mykey <String>: "Hello"
+}
+```
+
+* In this example the `<String>` is an **UDF value constraint**. In this case it means that the value `"Hello"` must be of String-type.
+
+* The actual UDFEL-expression is `String`. This is a shortcut for an expression: `=> type() = "String"`.
+
+#### How UDFEL-expressions are evaluated
+
+1. The actual value of the Object's field (`"Hello"`) is injected for the expression as the Root-value.
+2. The root-value may be accessed with `$`-operator.
+3. The current-value in the expression is accessed with `@`.
+4. The functions are called with `=>` -prefix, following by the function name. E.g. `=> type()`, which returns the data-type name of the value.
+5. The output of operation is given as input for the next operation.
+
+Consider this example:
+
+```
+{
+  mykey <Filter @ < 5; => count() = 4>: [1,2,3,4,5,6,7]
+}
+```
+
+Input: `[1,2,3,4,5,6,7]`
+UDFEL: `Filter @ < 5; => count() = 4`
+
+The `Filter` -expression outputs: `[1, 2, 3, 4]`, which will be input for `=> count()`, which output `4`, which is the Left Hand Side (LHS) of `LHS = 4`. So the finally evaluated expression is `4 = 4`, which is `true`.
+
+### Arrays
+
+Arrays may be filtered with the `Filter` expression. This expression must and with `End` or `;`. The `Filter` -keyword may be shortened with `[` and `]` when the expression does not start with `Filter`.
+
+#### Example
+
+```
+[1,2,3,4,5,6,7] Filter @ < 5;
+```
+
+#### UDF Arrays and zero-index
+
+The zero-index on UDF-expression language's Filter returns all UDF Paths as an array (where each element is a `Path` object). This can be a powerful feature with several potential use cases:
 
 **1. Dynamic Schema Exploration:**
 
