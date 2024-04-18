@@ -42,12 +42,13 @@ Udf is a well thought out data format which fixes the key problems with JSON wit
 | Multiline String value """\|  | Multiline String-value can be declared | `{key: """\|line1\n  line2\n  line3"""}`
 | Multiline String value """>  | Multiline String-value can be declared | `{key: """>line1\n  line2\n  line3"""}`
 | Raw-value    | Raw-value can be declared inside backticks | ```{key: `raw value`}```
-| Metadata     | Object's field may have metadata (or configuration options). Metadata is declared in an object itself | `{mykey {hidden}: "my-value"}`
-| Constraints, support level 1 | Constraints are supported, but they are not evaluated | `{myfield <String>: "my-value"}`
+| Metadata     | Object's field may have metadata (or configuration options). Metadata is declared in an udf-object itself | `{mykey {hidden}: "my-value"}`
+| Constraints, support level 1 | Constraints declared with angle brackets are supported, but they are not evaluated | `{myfield <String>: "my-value"}`
 | Constraints, support level 2 | Constraints are supported and basic data-types are evaluated | `{myfield <String>: "my-value"}`
-| Constraints, support level 3 | Constraints are supported and basic data-types with "And" and "Or" are evaluated | `{myfield <String Or Empty>: "my-value"}`
-| Constraints, support level 4 | Constraints are supported with basic expressions | `{myfield <String And => length() < 20>: "my-value"}`
-| Constraints, support level 5 | Constraints are supported with rich expressions | `{myfield <String And => in("foo", "bar", "baz") < 20>: "my-value"}`
+| Constraints, support level 3 | Constraints are supported and basic data-types and "Or"-expressions are evaluated | `{myfield <String Or Empty>: "my-value"}`
+| Constraints, support level 4 | Constraints are supported with support for basic functions and all logical expressions from Udf-expression language | `{myfield <String And => length() < 20>: "my-value"}`
+| Constraints, support level 5 | Constraints are supported with rich expressions from Udf-expression language | `{myfield <.bin[1] = "bai">: {bin: ["bai", "baa"]}}`
+| Constraints, support level 6 | Constraints are supported with full Udf-expression language | `{myfield <When => key() = "bin": .bin => length() < 3; Otherwise => value() => length() < 20;>: {bin: ["bai", "baa"]}}`
 
 ## Udf-grammar
 
@@ -56,7 +57,7 @@ Here's the Universal data format's grammar expresses with ANTLR4:
 ```
 // 
 // License: MIT
-//
+// 
 
 grammar UDF;
 
@@ -70,8 +71,15 @@ obj
    ;
 
 pair
-   : (STRING | ID) ':' value
+   //: (STRING | ID) ':' value
+   // Supports field configurations, e.g. {foo {hidden} <String>: "bar"}
+   // Supports keys without giving value (Boolean-key)
+   : (STRING | ID) obj? constraint_udf_value? (':' (value))?
    ;
+
+constraint_udf_value
+    : '<' (ESC | SAFECODEPOINT)* '>'
+    ;
 
 array
    : '[' value (',' value)* ']'
