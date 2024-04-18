@@ -36,7 +36,7 @@ Udf is a well thought out data format which fixes the key problems with JSON wit
 |--------------|-----------------------------------------------------|--------
 | Comments     | UDF supports comments                               | `{key: "value"} # this is a comment`
 | Empty-value  | Empty-value can be declared. It is omitted when data is serialized | `{key: empty}`
-| Boolean keys | Object can have value omitted. The key is interpreted as Boolean, and the value will be true | `{hidden}`
+| Boolean keys | Object's key can have value omitted. In this case the key is interpreted as Boolean, and the value will be true | `{hidden}`
 | Path-value   | Path-value can be declared. It is serialized as string | `{key: ~.otherKey[1].value}`
 | Multiline String value       | Basic multiline String-value can be declared | `{key: """line1\n  line2\n  line3"""}`
 | Multiline String value """\|  | Multiline String-value can be declared | `{key: """\|line1\n  line2\n  line3"""}`
@@ -249,6 +249,41 @@ ID
 COMMENT
     : '#' ~[\r\n]* -> skip
     ;
+```
+
+## Boolean keys
+
+The object's key may have value omitted. In this case the key will be interpreted as a Boolean -value and the value will be set as `true`.
+
+### Grammar
+
+```
+obj
+   : '{' pair (',' pair)* '}'
+   | '{' '}'
+   ;
+
+pair
+   : (STRING | ID) obj? constraint_udf_value? (':' (value))?
+   ;
+```
+
+### Example
+
+```
+{
+  prettyPrint,
+  otherOption: false
+}
+```
+
+The corresponding JSON is as follows:
+
+```json
+{
+  "prettyPrint": true,
+  "otherOption": false
+}
 ```
 
 ## Path -type in Universal data format
