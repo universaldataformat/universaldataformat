@@ -273,6 +273,27 @@ With UDF it is also possible to use the UDF Metadata to advice the application c
   }: Path(.names[1])
 }
 ```
+### UDF Paths Navigation
+
+* **.names**: This refers to a key within a JSON/UDF object. In the path `Path(.names[1])`, it indicates that we are looking for the value associated with the key `"names"`.
+
+* **[1]**: This represents an index within a list or array. In the path `Path(.names[1])`, it means we are interested in the value at the first position (index 1) of the list associated with the `"names"` key.
+
+**Example:**
+
+Given a JSON structure like this:
+
+```json
+{
+  "names": ["Alice", "Bob", "Charlie"]
+}
+```
+
+The path `Path(.names[1])` would target the value 'Alice'.
+
+In essence, `.names` specifies the key within the JSON/UDF object, and `[1]` selects the element at the first position (index 1) from the value found using the key. This allows you to navigate through nested structures within your JSON/UDF data.
+
+### Use cases for Paths
 
 There are several use cases that could benefit from UDF Paths with their separation of concerns between path navigation and value interpretation:
 
@@ -307,3 +328,34 @@ path_value
 
 * Path can be written in a shorthand form with `~(...)`. E.g. `~(.names[1]`.
   * This shorthand form supports also empty paths, e.g. `~()`.
+
+### Paths and one-based indexing
+
+Returning all UDF Paths as an array (where each element is a `Path` object) from a zero-index can be a powerful feature with several potential use cases:
+
+**1. Dynamic Schema Exploration:**
+
+* Imagine a scenario where the application doesn't have predefined knowledge of the exact structure of incoming JSON data. By using a zero-index to get all UDF Paths, the application can dynamically explore the schema and identify the available keys and nested structures within the data. This allows for handling data with flexible or evolving schemas.
+
+**2. Automatic Data Validation:**
+
+* With all UDF Paths in hand, the application can define validation rules against these paths. It can then iterate through the paths and validate the presence of expected keys and data types at those locations within the JSON structure. This enables automated validation for ensuring data integrity.
+
+**3. Generic Data Processing Pipelines:**
+
+* By having all paths, you can design generic data processing pipelines that work on various JSON structures. The pipeline can iterate through the paths, extract the values, and perform the necessary operations without needing to be specific about the exact data layout. This promotes code reusability and simplifies handling diverse data formats. 
+
+**4. Documentation Generation:**
+
+* Extracting all UDF Paths can be useful for generating automatic documentation for the data format. The paths themselves act as comments, indicating the available data points within the JSON structure. This improves code readability and understanding for developers working with the data.
+
+**5. Runtime Path Selection:**
+
+* In some cases, the application might need to choose the appropriate path based on runtime conditions. Having all paths readily available allows for dynamic path selection based on specific criteria, offering greater flexibility in data access.
+
+**Considerations:**
+
+* As mentioned earlier, retrieving all paths can be computationally expensive for very large JSON structures. Implementing efficient algorithms for path retrieval is crucial.
+* Defining clear semantics around how to handle arrays within arrays (nested structures) is important to avoid ambiguity when generating all paths.
+
+Overall, while there are some challenges to consider, the ability to return all UDF Paths as an array offers a powerful approach for schema exploration, data validation, generic processing pipelines, and more. It promotes flexibility and simplifies handling diverse JSON data structures within your UDF framework.
