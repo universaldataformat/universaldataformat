@@ -251,6 +251,62 @@ COMMENT
     ;
 ```
 
+## Comments
+
+UDF supports comments with Python-style hash (#) notation.
+
+### Example
+
+```json
+{
+  "myfield": "myvalue", # This is a comment describing the value
+  anotherValue: 100
+}
+```
+
+Here's another example:
+
+```json
+# Here's an array
+[
+  # Below are some values
+  "bin", "bai", "baa",
+
+  # Here's some more values
+  100, 200, 300 # Three values
+]
+```
+
+### Benefits
+
+**Improved Readability and Maintainability:**
+
+* **Comments Explain Data Purpose:**  Hash comments allow developers to add explanations directly within the UDF data. This clarifies the meaning and usage of specific fields, values, or sections.  Understanding the data's intent becomes easier, especially for those new to the format or unfamiliar with specific values.
+
+* **Document Logic and Behavior:**  Comments can document the logic behind how the data is used or the expected behavior of the application when encountering certain values. This improves code maintainability in the long term.  Developers can understand the reasoning behind the data without solely relying on code or variable names.
+
+* **Self-Documenting Code:** UDF code with comments becomes self-documenting. The comments explain the data structure and usage directly within the UDF file, reducing the need for separate documentation files or comments within the application logic itself.
+
+**Enhanced Collaboration:**
+
+* **Shared Context for Developers:** Comments within UDF data facilitate collaboration by providing context for developers working on the same data.  They can understand the rationale behind specific data points and make informed decisions when modifying or using the data.
+
+* **Knowledge Transfer:**  Comments can serve as a knowledge transfer mechanism. Experienced developers can document their understanding of the data for future reference, aiding new developers or those unfamiliar with specific parts of the UDF structure.
+
+**Specific Advantages of Python-Style Comments:**
+
+* **Familiarity:** Python-style comments are widely used in the programming world. This familiarity makes them easy to understand for developers with experience in various programming languages.
+
+* **Consistency:**  Using consistent comment notation throughout the UDF data and potentially within the application code itself promotes a unified style, improving overall readability and maintainability of the codebase.
+
+**Here are some additional points to consider:**
+
+* **Over-Commenting:** While comments are beneficial, avoid excessive commenting.  Clear and concise code with well-chosen variable names often doesn't require overly verbose comments.
+
+* **Strike a Balance:** Strive for a balance between explaining complex logic or non-obvious data points and keeping the codebase concise and readable.
+
+In conclusion, UDF's support for Python-style comments is a valuable feature that enhances code readability, maintainability, collaboration, and knowledge sharing. By effectively incorporating comments, you can create well-documented and understandable UDF data that is easier to work with and maintain over time.
+
 ## Boolean keys
 
 The object's key may have value omitted. In this case the key will be interpreted as a Boolean -value and the value will be set as `true`.
