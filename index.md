@@ -286,6 +286,36 @@ The corresponding JSON is as follows:
 }
 ```
 
+### Benefits
+
+UDF's support for boolean keys offers several potential benefits:
+
+**1. Conciseness and Readability:**
+
+* By omitting the value for a key, you can write more concise code. This can improve readability, especially for objects with many "true" flags.
+
+* The code becomes more self-documenting. The presence of a key itself implies a "true" value, eliminating the need for explicit `true` assignments.
+
+**2. Default Values:**
+
+* Boolean keys can act as convenient defaults. If a key is missing entirely, it can be interpreted as "false" by default. This simplifies handling optional settings.
+
+**3. Backward Compatibility:**
+
+* Introducing boolean keys allows for future additions to the data format without breaking existing parsers. If a new "flag" needs to be added, it can be introduced as a boolean key initially set to "false" by default. Parsers that don't recognize the new key will simply ignore it, maintaining backward compatibility.
+
+**4. Consistency with Other Data Formats:**
+
+* Some data formats, like YAML, already support shorthand syntax for boolean values. UDF's boolean keys provide a similar level of conciseness and consistency for users familiar with these formats.
+
+**Here are some additional points to consider:**
+
+* **Overuse:** While concise, excessive use of boolean keys might make the code harder to understand for newcomers to the format. A balanced approach is key.
+
+* **Clarity:**  For complex logic or non-obvious flags, consider adding comments to explain the purpose of the boolean key for better maintainability.
+
+Overall, UDF's boolean keys offer a convenient way to write concise and readable code, manage default values, and ensure backward compatibility. However, it's important to use them judiciously to maintain clarity and avoid confusion.
+
 ## Path -type in Universal data format
 
 Examples of UDF Paths are given below:
