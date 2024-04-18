@@ -251,7 +251,28 @@ COMMENT
     ;
 ```
 
-## Paths in Universal data format
+## Path -type in Universal data format
+
+Examples of UDF Paths are given below:
+
+* `Path(.names[1])`
+  * This path is not plugged into any specific root-value, the application must define or know it implicitly or based on other context information.
+
+* `Path($foo.names[1])`
+  * The application context has a named value "foo" which is the starting point for the path.
+
+* `Path(foo().names[1])`
+  * The application context has a named function "foo", and executing it gives the value for the path's starting point.
+
+With UDF it is also possible to use the UDF Metadata to advice the application context how the root-value should be resolved. The example below highlights this point:
+
+```
+{
+  mykey {
+    contextValue: "foo"
+  }: Path(.names[1])
+}
+```
 
 There are several use cases that could benefit from UDF Paths with their separation of concerns between path navigation and value interpretation:
 
@@ -266,3 +287,23 @@ There are several use cases that could benefit from UDF Paths with their separat
 5. **Improved Code Readability:**  UDF Paths with named values can enhance code readability. Paths become self-documenting, clearly indicating the data point being accessed. The application context handles the interpretation of named values, keeping the path definition focused on navigation.
 
 Overall, UDF Paths with their separation of path navigation and value interpretation offer a flexible and modular approach to accessing data within complex JSON structures. This can lead to improved code maintainability, easier handling of data model changes, and context-specific value processing.
+
+### Path -grammar
+
+```
+path_value
+   : ('Path' | '~') '(' (CONST_ID | (ID ':')* ID '(' ')')? (('.' ID) | ('[' NUMBER ']'))* ')'
+   | '~' (CONST_ID | (ID ':')* ID '(' ')')? (('.' ID) | ('[' NUMBER ']'))+
+   | '~' '(' (('.' ID) | ('[' NUMBER ']'))* ')'
+   ;
+```
+
+* `Path` cannot be written in lowercase.
+
+* Path may be empty, e.g. `Path()`.
+
+* Path can be written in a shorthand form with `~`. E.g. `~.names[1]`.
+  * This shorthand form does not support empty paths.
+
+* Path can be written in a shorthand form with `~(...)`. E.g. `~(.names[1]`.
+  * This shorthand form supports also empty paths, e.g. `~()`.
