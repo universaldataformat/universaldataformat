@@ -190,14 +190,8 @@ Overall, UDF's boolean keys offer a convenient way to write concise and readable
 
 ### Examples
 
-* `Path(.names[1])`
+* `Path(.names[0])`
   * This path is not plugged into any specific root-value, the application must define or know it implicitly or based on other context information.
-
-* `Path($foo.names[1])`
-  * The application context has a named value "foo" which is the starting point for the path.
-
-* `Path(foo().names[1])`
-  * The application context has a named function "foo", and executing it gives the value for the path's starting point.
 
 With UDF it is also possible to use the UDF Metadata to advice the application context how the root-value should be resolved. The example below highlights this point:
 
@@ -205,11 +199,13 @@ With UDF it is also possible to use the UDF Metadata to advice the application c
 {
   mykey {
     contextValue: "foo"
-  }: Path(.names[1])
+  }: Path(.names[0])
 }
 ```
 
 ### Path -grammar
+
+TODO: remove variable and function support from udf-grammar!
 
 ```
 path_value
@@ -223,17 +219,17 @@ path_value
 
 * Path may be empty, e.g. `Path()`.
 
-* Path can be written in a shorthand form with `~`. E.g. `~.names[1]`.
+* Path can be written in a shorthand form with `~`. E.g. `~.names[0]`.
   * This shorthand form does not support empty paths.
 
-* Path can be written in a shorthand form with `~(...)`. E.g. `~(.names[1]`.
+* Path can be written in a shorthand form with `~(...)`. E.g. `~(.names[0]`.
   * This shorthand form supports also empty paths, e.g. `~()`.
 
 ### Paths Navigation
 
-* **.names**: This refers to a key within a JSON/UDF object. In the path `Path(.names[1])`, it indicates that we are looking for the value associated with the key `"names"`.
+* **.names**: This refers to a key within a JSON/UDF object. In the path `Path(.names[0])`, it indicates that we are looking for the value associated with the key `"names"`.
 
-* **[1]**: This represents an index within a list or array. In the path `Path(.names[1])`, it means we are interested in the value at the first position (index 1) of the list associated with the `"names"` key.
+* **[1]**: This represents an index within a list or array. In the path `Path(.names[0])`, it means we are interested in the value at the first position (index 0) of the list associated with the `"names"` key.
 
 **Example:**
 
@@ -245,9 +241,9 @@ Given a JSON structure like this:
 }
 ```
 
-The path `Path(.names[1])` would target the value 'Alice'.
+The path `Path(.names[0])` would target the value 'Alice'.
 
-In essence, `.names` specifies the key within the JSON/UDF object, and `[1]` selects the element at the first position (index 1) from the value found using the key. This allows you to navigate through nested structures within your JSON/UDF data.
+In essence, `.names` specifies the key within the JSON/UDF object, and `[0]` selects the element at the first position (index 0) from the value found using the key. This allows you to navigate through nested structures within your JSON/UDF data.
 
 ### Benefits
 
@@ -292,8 +288,6 @@ UDF constraints with UDFEL expressions offer several benefits for validating and
 **2. Improved Data Processing:**
 
 * UDFEL expressions can be used for data transformation and manipulation within the constraints themselves.  This can simplify your code and avoid the need for separate processing steps.
-
-* Functions like `filter` in your example demonstrate how UDFEL can be used to filter or modify values based on certain conditions, reducing the need for external processing logic.
 
 **3. Reusability and Maintainability:**
 
